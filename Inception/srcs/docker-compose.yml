@@ -8,13 +8,14 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /Users/rharing/Documents/test/mariadb
+      device: /Users/rharing/Documents/codam/Inception/data/mariadb
   wordpressVol:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /Users/rharing/Documents/test/wordpress
+      device: /Users/rharing/Documents/codam/Inception/data/wordpress
+
 
 services:
   nginx:

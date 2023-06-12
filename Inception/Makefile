@@ -1,18 +1,27 @@
 all: up
 
+# Create and start containers
 up:
-		docker-compose -f ./Src/docker-compose.yml up -d
+		docker-compose -f ./srcs/docker-compose.yml up -d
+
+# Stop and remove containers, networks
 down:
-		docker-compose -f ./Src/docker-compose.yml down
+		docker-compose -f ./srcs/docker-compose.yml down
+
+# stop services
 stop:
-		docker-compose -f ./Src/docker-compose.yml stop
+		docker-compose -f ./srcs/docker-compose.yml stop
+
+# start services
 start:
-		docker-compose -f ./Src/docker-compose.yml start
+		docker-compose -f ./srcs/docker-compose.yml start
+
 restart:
-		docker-compose -f ./Src/docker-compose.yml stop
-		docker-compose -f ./Src/docker-compose.yml up -d
-clean:
-		docker rmi $(docker images -q)
+		docker-compose -f ./srcs/docker-compose.yml rest
+
+clean: down
+		docker rmi srcs_mariadb srcs_nginx srcs_wordpress
+		docker volume rm srcs_mariadbVol srcs_wordpressVol
 open:
 		@open -a Docker
 		@echo "Open Docker"

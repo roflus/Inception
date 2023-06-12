@@ -1,10 +1,6 @@
 #! /bin/bash
 
-if [! -f "/var/www/html/wp-config.php"]; then
-
-    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    chmod +x wp-cli.phar
-    mv wi-cli.phar usr/local/bin/wp
+if [ ! -f "/var/www/html/wp-config.php" ]; then
 
     wp core download --path="/var/www/html"  --alow-root
 
@@ -16,12 +12,20 @@ if [! -f "/var/www/html/wp-config.php"]; then
     --alow-root
 
     wp core install --path="/var/www/html" \
+    --url="https://$DOMAIN_NAME/" \
     --title="Example Site" \
-    --
+    --admin_user=$WP_ADMIN_USERNAME \
+    --admin_password=$WP_ADMIN_PASSWORD \
+    --admin_email=$WP_ADMIN_USERNAME@$DOMAIN_NAME \
+    --skip-email \
+    --allow-root
 
+    wp user create $WP_USER_USERNAME $WP_USER_USERNAME@$DOMAIN_NAME \
+        --path="/var/www/html" \
+        --user_pass=$WP_USER_PASSWORD \
+        --allow-root
+else
+    echo "Wordpress is already installed"
+fi
 
-
-    mv /var/www/html/wp-config-sample.php /var/ww/html/wp-config.php
-
-    sed -i -r "s/database/$/1"   wp-config.php
-    set-i -r "s/database/$db_user/1"
+exec $@

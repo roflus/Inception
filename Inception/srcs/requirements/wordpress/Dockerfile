@@ -1,10 +1,16 @@
 FROM debian:buster
 
 RUN apt-get -y update; apt-get -y upgrade;
+RUN apt install -y php-fpm php-mysql mariadb-client curl -y
 
-RUN apt install php-fpm -y; apt install curl -y
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN chmod +x wp-cli.phar; mv wp-cli.phar usr/local/bin/wp
 
-COPY tools/configure.sh /usr/bin/
+RUN mkdir -p /run/php
+RUN sed -i 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
 
-ENTRYPOINT [ "bash", "configure.sh" ]
-# CMD [ "executable" ]
+COPY tools/configure.sh /var/www/
+RUN chmod +x /var/www/configure.sh
+
+ENTRYPOINT [ "/var/www/configure.sh" ]
+CMD ["php-fpm7.3", "-F"]

@@ -1,9 +1,9 @@
 #!bin/sh
 
-if (! /run/mysqld) {
-    mkdir -p /var/run/mysqld
-    chown -R mysql:root /var/run/mysqld
-}
+echo "CREATE USER IF NOT EXITS $MYSQL_USERNAME;"
+echo "CREATE USER IF NOT EXISTS $MYSQL_USERNAME@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+echo "GRANT ALL ON *.* TO $MYSQL_USERNAME@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+echo "FLUSH PRIVILEGES;"
+mysqld --bootstrap
 
-
-echo "CREATE DATABASE IF IT DOES NOT EXISTS" 
+exec "$@"
