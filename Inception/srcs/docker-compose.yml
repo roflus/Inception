@@ -8,13 +8,13 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /Users/rharing/Documents/codam/Inception/data/mariadb
+      device: /Users/rharing/Documents/Github/Inception_github/Inception/data/mariadb
   wordpressVol:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /Users/rharing/Documents/codam/Inception/data/wordpress
+      device: /Users/rharing/Documents/Github/Inception_github/Inception/data/wordpress
 
 
 services:
@@ -29,6 +29,8 @@ services:
       - wordpress
     networks:
       - inception
+    env_file:
+      .env
     restart: always
   
   wordpress:
@@ -54,9 +56,3 @@ services:
     networks:
       - inception
     restart: always
-    
-    
-
-
-
-
