@@ -2,7 +2,7 @@ FROM debian:buster
 
 EXPOSE 9000
 
-RUN apt-get -y update; apt-get -y upgrade;
+RUN apt-get -y update; apt-get -y upgrade
 RUN apt-get install -y php7.3-mysql php7.3-fpm mariadb-client curl
 
 RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar

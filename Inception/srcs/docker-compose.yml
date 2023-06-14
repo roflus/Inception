@@ -1,24 +1,27 @@
-networks:
-  inception:
-
+version: "3"
 
 volumes:
   mariadbVol:
+    name: mariadb
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /Users/rharing/Documents/Github/Inception_github/Inception/data/mariadb
+      # device: /Users/rharing/data/mariadb
   wordpressVol:
+    name: wordpress
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /Users/rharing/Documents/Github/Inception_github/Inception/data/wordpress
+      # device: /Users/rharing/data/wordpress
 
 
 services:
   nginx:
+    # image: nginx
     container_name: nginx
     build: ./requirements/nginx/
     ports:
@@ -29,11 +32,18 @@ services:
       - wordpress
     networks:
       - inception
-    env_file:
-      .env
+    # env_file:
+    #   - .env
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - SSL_COUNTRY=${SSL_COUNTRY}
+      - SSL_STATE=${SSL_STATE}
+      - SSL_LOCALITY=${SSL_LOCALITY}
+      - SSL_ORGANISATION=${SSL_ORGANISATION}
     restart: always
   
   wordpress:
+    # image: wordpress
     container_name: wordpress
     build: ./requirements/wordpress/
     volumes:
@@ -42,17 +52,37 @@ services:
       - mariadb
     networks:
       - inception
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
+    environment:
+      - WP_ADMIN_USERNAME=${WP_ADMIN_USERNAME}
+      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD}
+      - WP_USER_USERNAME=${WP_USER_USERNAME}
+      - WP_USER_PASSWORD=${WP_USER_PASSWORD}
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOSTNAME=${MYSQL_HOSTNAME}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     restart: always
 
   mariadb:
+    # image: mariadb
     container_name: mariadb
     build: ./requirements/mariadb/
     volumes:
       - mariadbVol:/var/lib/mysql
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_HOSTNAME=${MYSQL_HOSTNAME}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     networks:
       - inception
     restart: always
+
+
+networks:
+  inception:
