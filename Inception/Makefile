@@ -20,8 +20,8 @@ restart:
 		docker-compose -f ./srcs/docker-compose.yml rest
 
 clean: down
-		docker rmi srcs_mariadb srcs_nginx srcs_wordpress
-		docker volume rm srcs_mariadbVol srcs_wordpressVol
+		docker rmi mariadb nginx wordpress
+		docker volume rm mariadb wordpress
 open:
 		@open -a Docker
 		@echo "Open Docker"

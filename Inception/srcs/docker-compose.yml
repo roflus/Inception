@@ -21,7 +21,7 @@ volumes:
 
 services:
   nginx:
-    # image: nginx
+    image: nginx
     container_name: nginx
     build: ./requirements/nginx/
     ports:
@@ -32,18 +32,12 @@ services:
       - wordpress
     networks:
       - inception
-    # env_file:
-    #   - .env
-    environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - SSL_COUNTRY=${SSL_COUNTRY}
-      - SSL_STATE=${SSL_STATE}
-      - SSL_LOCALITY=${SSL_LOCALITY}
-      - SSL_ORGANISATION=${SSL_ORGANISATION}
+    env_file:
+      - .env
     restart: always
   
   wordpress:
-    # image: wordpress
+    image: wordpress
     container_name: wordpress
     build: ./requirements/wordpress/
     volumes:
@@ -52,33 +46,18 @@ services:
       - mariadb
     networks:
       - inception
-    # env_file:
-    #   - .env
-    environment:
-      - WP_ADMIN_USERNAME=${WP_ADMIN_USERNAME}
-      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD}
-      - WP_USER_USERNAME=${WP_USER_USERNAME}
-      - WP_USER_PASSWORD=${WP_USER_PASSWORD}
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_HOSTNAME=${MYSQL_HOSTNAME}
-      - MYSQL_USERNAME=${MYSQL_USERNAME}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    env_file:
+      - .env
     restart: always
 
   mariadb:
-    # image: mariadb
+    image: mariadb
     container_name: mariadb
     build: ./requirements/mariadb/
     volumes:
       - mariadbVol:/var/lib/mysql
-    # env_file:
-    #   - .env
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_HOSTNAME=${MYSQL_HOSTNAME}
-      - MYSQL_USERNAME=${MYSQL_USERNAME}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    env_file:
+      - .env
     networks:
       - inception
     restart: always
@@ -86,3 +65,4 @@ services:
 
 networks:
   inception:
+    name: inception
